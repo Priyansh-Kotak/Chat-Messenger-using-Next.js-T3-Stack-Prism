@@ -4,6 +4,7 @@ import { useUser } from "@clerk/nextjs";
 import { SignInButton } from "@clerk/nextjs";
 import { SignIn } from "@clerk/nextjs";
 import { SignOutButton } from "@clerk/nextjs";
+import { api } from "~/utils/api";
 
 export default function Home() {
   const user = useUser();
@@ -12,6 +13,8 @@ export default function Home() {
   const toggleSignIn = () => {
     setShowSignIn(!showSignIn);
   };
+
+  const { data } = api.posts.getAll.useQuery();
 
   return (
     <>
@@ -40,6 +43,10 @@ export default function Home() {
             </SignOutButton>
           </div>
         )}
+
+        <div>
+          {data?.map((post) => <div key={post.id}>{post.content}</div>)}
+        </div>
       </main>
     </>
   );
