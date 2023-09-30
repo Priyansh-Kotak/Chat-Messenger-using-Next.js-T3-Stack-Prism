@@ -17,7 +17,7 @@ const CreateWizard = () => {
   const [input, setInput] = useState<string>(""); // Use array destructuring for useState
   const ctx = api.useContext();
 
-  const { mutate, isLoadinig: isPosting } = api.posts.create.useMutation({
+  const { mutate, isLoading: isPosting } = api.posts.create.useMutation({
     onSuccess: () => {
       setInput("");
       void ctx.posts.getAll.invalidate();
