@@ -14,6 +14,17 @@ dayjs.extend(relativeTime);
 
 const CreateWizard = () => {
   const { user } = useUser();
+  const [input, setInput] = useState<string>(""); // Use array destructuring for useState
+  const ctx = api.useContext();
+
+  const { mutate, isLoadinig: isPosting } = api.posts.create.useMutation({
+    onSuccess: () => {
+      setInput("");
+      void ctx.posts.getAll.invalidate();
+    },
+  });
+
+  // const { mutate } = api.posts.create.useMutation();
 
   console.log(user);
 
@@ -28,8 +39,13 @@ const CreateWizard = () => {
       />
       <input
         placeholder="Type some emojis !..."
-        className=" w-[50%] grow bg-transparent outline-none"
+        className="w-[50%] grow bg-transparent outline-none"
+        type="text"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        disabled={isPosting}
       />
+      <button onClick={() => mutate({ content: input })}>Post</button>
     </div>
   );
 };
@@ -64,7 +80,7 @@ const Feed = () => {
 
   return (
     <div className="flex flex-col">
-      {[...data, ...data]?.map((fullPost) => (
+      {data.map((fullPost) => (
         <PostView {...fullPost} key={fullPost.post.id} />
       ))}
     </div>
