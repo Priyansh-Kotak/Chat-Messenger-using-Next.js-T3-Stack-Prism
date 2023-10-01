@@ -8,7 +8,8 @@ import { api } from "~/utils/api";
 import type { RouterOutputs } from "~/utils/api";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { LoadingPage } from "~/Components/Loading";
+import { Loading, LoadingPage } from "~/Components/Loading";
+import toast from "react-hot-toast";
 
 dayjs.extend(relativeTime);
 
@@ -21,6 +22,16 @@ const CreateWizard = () => {
     onSuccess: () => {
       setInput("");
       void ctx.posts.getAll.invalidate();
+    },
+
+    onError: (e) => {
+      const errorMessage = e.data?.zodError?.fieldErrors.content;
+      if (errorMessage && errorMessage[0]) {
+        toast.error(errorMessage[0]);
+        setInput("");
+      } else {
+        toast.error("Opps... only emojis are allowed 🤌");
+      }
     },
   });
 
@@ -43,9 +54,27 @@ const CreateWizard = () => {
         type="text"
         value={input}
         onChange={(e) => setInput(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            if (input !== "") {
+              mutate({ content: input });
+            }
+          }
+        }}
         disabled={isPosting}
       />
-      <button onClick={() => mutate({ content: input })}>Post</button>
+      {input !== "" && !isPosting && (
+        <button onClick={() => mutate({ content: input })} disabled={isPosting}>
+          Post
+        </button>
+      )}
+
+      {isPosting && (
+        <div className="item-center flex justify-center">
+          <Loading size={20} />{" "}
+        </div>
+      )}
     </div>
   );
 };
