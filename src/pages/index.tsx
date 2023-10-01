@@ -11,6 +11,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { Loading, LoadingPage } from "~/Components/Loading";
 import toast from "react-hot-toast";
 import Link from "next/link";
+import Image from "next/image";
 
 dayjs.extend(relativeTime);
 
@@ -36,17 +37,15 @@ const CreateWizard = () => {
     },
   });
 
-  // const { mutate } = api.posts.create.useMutation();
-
-  console.log(user);
-
   if (!user) return null;
 
   return (
     <div className="flex w-full gap-6">
-      <img
+      <Image
         src={user.imageUrl}
         alt="Profile image"
+        width={26}
+        height={26}
         className="h-14 w-14 rounded-full"
       />
       <input
@@ -87,7 +86,13 @@ const PostView = (props: PostWithUser) => {
 
   return (
     <div key={post.id} className="flex gap-4 border-b border-slate-400 p-8">
-      <img src={author?.profileImage} className="h-14 w-14 rounded-full " />
+      <Image
+        src={author?.profileImage}
+        className="h-14 w-14 rounded-full "
+        width={500}
+        height={500}
+        alt="Picture of the author"
+      />
       <div className="flex flex-col">
         <div className="flex font-bold">
           <Link href={`/@${author.username}`}>
