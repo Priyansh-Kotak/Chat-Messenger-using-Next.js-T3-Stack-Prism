@@ -10,6 +10,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { Loading, LoadingPage } from "~/Components/Loading";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 dayjs.extend(relativeTime);
 
@@ -89,10 +90,15 @@ const PostView = (props: PostWithUser) => {
       <img src={author?.profileImage} className="h-14 w-14 rounded-full " />
       <div className="flex flex-col">
         <div className="flex font-bold">
-          <span>{`@${author.username}`}</span>
-          <span className="font-thin">{` . ${dayjs(
-            post.createdAt,
-          ).fromNow()}`}</span>
+          <Link href={`/@${author.username}`}>
+            <span>{`@${author.username}`}</span>
+          </Link>
+
+          <Link href={`/post/${post.id}`}>
+            <span className="font-thin">{` . ${dayjs(
+              post.createdAt,
+            ).fromNow()}`}</span>
+          </Link>
         </div>
         <span className="text-2xl">{post.content}</span>
       </div>
@@ -136,8 +142,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex h-screen justify-center ">
-        <div className="h-full w-full border-x border-slate-400 md:max-w-2xl  md:max-h-full md:overflow-scroll">
-          <div className="flex w-full  border-b border-slate-400 p-4 sticky top-0 bg-black">
+        <div className="h-full w-full border-x border-slate-400 md:max-h-full  md:max-w-2xl md:overflow-scroll">
+          <div className="sticky top-0  flex w-full border-b border-slate-400 bg-black p-4">
             {!isSignedIn && (
               <div className="flex justify-center ">
                 <SignInButton>
