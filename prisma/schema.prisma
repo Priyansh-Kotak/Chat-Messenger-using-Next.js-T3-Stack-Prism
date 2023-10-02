@@ -3,7 +3,6 @@
 // const { PrismaClient } = require('@prisma/client');
 // const prisma = new PrismaClient;
 
-
 datasource db {
     provider     = "mysql"
     url          = env("DATABASE_URL")
