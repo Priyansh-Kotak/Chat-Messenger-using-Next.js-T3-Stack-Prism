@@ -34,7 +34,8 @@ export const postRouter = createTRPCRouter({
     const users = (
       await clerkClient.users.getUserList({
         userId : posts.map((post) => post.authorId),
-        limit :100
+        // limit :100,
+        
 
       })
     ).map(filterUserForClient);
@@ -50,13 +51,13 @@ export const postRouter = createTRPCRouter({
           message : "Author for the post is not found",
       });
 
-      console.log(author.username);
+      console.log(author.firstName);
       
       return{
         post,
         author :{
           ...author,
-          uername : author.username,
+          uername : author.firstName,
         }
 
       }

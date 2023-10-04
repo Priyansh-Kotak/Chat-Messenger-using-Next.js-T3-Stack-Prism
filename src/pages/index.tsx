@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 import Link from "next/link";
 import Image from "next/image";
 import ErrorPage from "~/Components/ErrorPage";
+import { PageLayout } from "~/Components/Layout";
 
 dayjs.extend(relativeTime);
 
@@ -45,7 +46,7 @@ const CreateWizard = () => {
   if (!user) return null;
 
   return (
-    <div className="flex w-full gap-6">
+    <div className="sticky top-0 flex border-b p-6 w-full gap-4 bg-black">
       <Image
         src={user.imageUrl}
         width={26}
@@ -100,8 +101,8 @@ const PostView = (props: PostWithUser) => {
       />
       <div className="flex flex-col">
         <div className="flex font-bold">
-          <Link href={`/@${author.username}`}>
-            <span>{`@${author.username}`}</span>
+          <Link href={`/@${author.firstName}`}>
+            <span>{`@${author.firstName}`}</span>
           </Link>
 
           <Link href={`/post/${post.id}`}>
@@ -121,7 +122,12 @@ const Feed = () => {
 
   if (postsLoading) return <LoadingPage />;
 
-  if (!data) return <div><ErrorPage /></div>;
+  if (!data)
+    return (
+      <div>
+        <ErrorPage />
+      </div>
+    );
 
   return (
     <div className="flex flex-col">
@@ -145,32 +151,29 @@ export default function Home() {
   if (!userLoaded) return <div></div>;
 
   return (
-  
-      <main className="flex h-screen justify-center ">
-        <div className="h-full w-full border-x border-slate-400 md:max-h-full  md:max-w-2xl md:overflow-scroll">
-          <div className="sticky top-0  flex w-full border-b border-slate-400 bg-black p-4">
-            {!isSignedIn && (
-              <div className="flex justify-center ">
-                <SignInButton>
-                  <button className="text-white" onClick={toggleSignIn}>
-                    Sign in
-                  </button>
-                </SignInButton>
-                {showSignIn && <SignIn />}
-              </div>
-            )}
-            {isSignedIn && (
-              <div>
-                <SignOutButton>
-                  <button className="text-white">Sign out</button>
-                </SignOutButton>
-              </div>
-            )}
-
-            <CreateWizard />
+    <PageLayout>
+      <div className="sticky top-0 w-full border-x border-slate-400 md:max-h-full  md:max-w-2xl md:overflow-scroll">
+        {!isSignedIn && (
+          <div className="flex justify-center border-b bg-white ">
+            <SignInButton>
+              <button className="text-white" onClick={toggleSignIn}>
+                Sign in
+              </button>
+            </SignInButton>
+            {showSignIn && <SignIn />}
           </div>
-          <Feed />
-        </div>
-      </main>
+        )}
+        {isSignedIn && (
+          <div>
+            <SignOutButton>
+              <button className="text-white">Sign out</button>
+            </SignOutButton>
+          </div>
+        )}
+
+        <CreateWizard />
+        <Feed />
+      </div>
+    </PageLayout>
   );
 }
