@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function ErrorPage() {
   return (
     <div className="flex h-screen w-full flex-col items-center justify-center space-x-8 space-y-16 lg:flex-row lg:space-y-0 2xl:space-x-0">
@@ -11,7 +13,7 @@ export default function ErrorPage() {
         <p className="my-12 text-lg text-gray-500 md:text-xl lg:text-2xl">
           Sorry, the page you are looking for could not be found.
         </p>
-        <a
+        <Link
           href="/"
           className="flex items-center space-x-2 rounded bg-blue-600 px-4 py-2 text-gray-100 transition duration-150 hover:bg-blue-700"
           title="Return Home"
@@ -29,7 +31,7 @@ export default function ErrorPage() {
             ></path>
           </svg>
           <span>Return Home</span>
-        </a>
+        </Link>
       </div>
       <div className="flex w-1/2 justify-center p-4 lg:h-full lg:items-end">
         <svg
