@@ -23,5 +23,5 @@ model Post {
 
     @@index([authorId])
 }
-
+  
 // deletePostById(yourIdToDelete);
